@@ -23,13 +23,12 @@ export default class FhlUrlParameter {
     private bindUrlParameterEvent() {
         let that = this;
         $(this._urlParameter).on('changed', function () {
-            console.log(that._urlParameter.result);
             let result = that.parseHashArrayBible(that._urlParameter.result)
             if (result != null) {
                 that.bibleResult.book = result.book != null ? result.book : -1
                 that.bibleResult.chap = result.chap != null ? result.chap : -1
                 that.bibleResult.sec = result.sec != null ? result.sec : -1
-
+                console.log(that)
                 $(that).trigger('bible', that.bibleResult);
             }
         });

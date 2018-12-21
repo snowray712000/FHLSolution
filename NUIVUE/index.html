@@ -10,16 +10,16 @@
   <meta property="og:image" content="static/images/FHLLOGO.png" />
   <meta property="og:site_name" content="FHL信望愛聖經工具" />
   <meta property="og:description" content="" />
-
+  
   <!-- 第3方函式庫, 統一 include: jquery/jqueryUI, react, linq, vue-->
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
   <!--<script>
-      $.ajax({
+    $.ajax({
       url: '/Scripts/jquery-ui.js',
       dataType: "script",
       async: false
-      });
+    });
   </script>-->
   <style type="text/css">
     .bstw {
@@ -33,30 +33,41 @@
   </style>
 
 
-  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
 
-  <script src="static/libs/react/react-0.13.1.min.js"></script>
+<script src="static/libs/react/react-0.13.1.min.js"></script>
 
-  <script src="static/libs/linq.js_ver2.2.0.2/linq.min.js"></script>
-  <script src="static/libs/linq.js_ver2.2.0.2/jquery.linq.min.js"></script>
-  <script src="static/Scripts/vue.js"></script>
+<script src="static/libs/linq.js_ver2.2.0.2/linq.min.js"></script>
+<script src="static/libs/linq.js_ver2.2.0.2/jquery.linq.min.js"></script>
+<script src="static/Scripts/vue.js"></script>
 
-  <script src="static/Scripts/FHL/FHL.js"></script>
-  <script src="static/Scripts/FHL/CONSTANT/bible-constants.js"></script>
-  <script src="static/Scripts/FHL/STR/eachFitDo.js"></script>
-  <script src="static/Scripts/FHL/NET/UrlParameter.js"></script>
-  <script src="static/Scripts/FHL/FhlUrlParameter.js"></script>
+<!-- map 初始化 -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+crossorigin=""></script>
 
+<script src="static/fhlmap_api/fhlmap.js"></script>
+<script src="static/fhlmap_api/fhlmap_main.js"></script>
 
+<script src="static/Scripts/FHL/FHL.js"></script>
+<script src="static/Scripts/FHL/CONSTANT/bible-constants.js"></script>
+<script src="static/Scripts/FHL/STR/eachFitDo.js"></script>
+<script src="static/Scripts/FHL/NET/UrlParameter.js"></script>
+<script src="static/Scripts/FHL/FhlUrlParameter.js"></script>
+  
+  
   <title>信望愛聖經工具</title>
   <link rel="shortcut icon" href="static/images/FHLLOGO.ico" type="image/x-icon" />
-
+  
   <link rel="stylesheet" href="static/libs/fhl.css" />
   <link rel="stylesheet" href="static/libs/icons/css/font-awesome.css" />
-
-
+  
+  
   <script src="static/libs/jquery.hotkeys.js"></script>
-
+  
   <!-- 2017.07 將新版NUI常數納入,並統一用法 -->
   <!--2015.09.02(三) snow add. React lib (可以共用的react))-->
   <script src="static/commonR/processbar.js"></script>
@@ -100,14 +111,14 @@
   <link rel="stylesheet" href="./static/libs/ie.css" type="text/css" media="screen, projection" />
   <![endif]-->
 
-  <script src="static/fhlmap_api/fhlmap.js"></script>
-  <script src="static/fhlmap_api/fhlmap_main.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?signed_in=true&libraries=geometry&sensor=false"></script>
+  <!-- mark by snow 201812, cause google 開始收費 -->
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxyhdnMGhv1HSin9rrO0omJ65ypERcha0&signed_in=true&libraries=geometry&sensor=false"></script> -->
 
+  <!-- 一定要有height -->
+  <style>#fhlInfoContent { height: 100%; }</style>
 
   <script>
     var fhlUrlParameter = new FHL.FhlUrlParameter()
-
     var pageState;
     var currentSWVer = "1.2";
     var isfirstob; // ob 典藏用
@@ -1222,6 +1233,11 @@
         'margin': sz * 1.25 - 15 + 'px 0px'
       });
       $('#fhlInfoContent .parsingTop').css({
+        'font-size': $('#fhlLectureFontSize').val() + 'pt',
+        'line-height': sz * 1.25 + 'pt',
+        'margin': sz * 1.25 - 15 + 'px 0px'
+      });
+      $('#parsingTable').css({
         'font-size': $('#fhlLectureFontSize').val() + 'pt',
         'line-height': sz * 1.25 + 'pt',
         'margin': sz * 1.25 - 15 + 'px 0px'
@@ -2684,6 +2700,7 @@
     // 2017.08
     $(function () {
       $(fhlUrlParameter).on('bible', function () {
+        console.log('bible trigger')
         // console.log(fhlUrlParameter.bibleResult) // {book: 1, chap: 12, sec: 9}
         if (pageState != undefined) {
           pageState.chineses = FHL.CONSTANT.Bible.CHINESE_BOOK_ABBREVIATIONS[fhlUrlParameter.bibleResult.book - 1]
@@ -3330,7 +3347,7 @@
                   var headDivStyle = "<div class='parsingTop' style=\"position: absolute; left: 0px; right: 0px; top: 0px; height: 200px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; overflow:auto; padding: 30px 50px 10px; box-shadow: inset 0px -4px 7px #808080;"+ strFontSizeStyle +";" + ((N == 1) ? "text-align:right;" : "") +
                   "\">";
 
-                var html = chap_ctrl_str + headDivStyle + head_str + "</div><div id='parsingTable' style=\"position: absolute; top: 212px; left: 0px; right: 0px; bottom: 0px; padding: 10px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; overflow:auto;box-shadow: inset 0px 4px 7px #808080;\"><table border=\"1\">" + "<tr><td class=\"g0\">原文字</td><td class=\"g0\">SN</td>" + ptg + "<td class=\"g0\">字彙分析</td><td class=\"g0\">原型</td><td class=\"g0\">原型簡義</td><td class=\"g0\">備註</td>" + body_str + "</table></div>";
+                var html = chap_ctrl_str + headDivStyle + head_str + "</div><div id='parsingTable' style=\""+strFontSizeStyle+";position: absolute; top: 212px; left: 0px; right: 0px; bottom: 0px; padding: 10px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; overflow:auto;box-shadow: inset 0px 4px 7px #808080;\"><table border=\"1\">" + "<tr><td class=\"g0\">原文字</td><td class=\"g0\">SN</td>" + ptg + "<td class=\"g0\">字彙分析</td><td class=\"g0\">原型</td><td class=\"g0\">原型簡義</td><td class=\"g0\">備註</td>" + body_str + "</table></div>";
 
                 html = "<div style='position: absolute; top: 200px; left: 0px; right: 0px; height: 12px; background: #A0A0A0;'></div>" + html + "";
 

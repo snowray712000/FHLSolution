@@ -144,7 +144,6 @@ sephp.create_dialog_search_result = function create_dialog_search_result(jrecord
       //div_left.appendChild(span_ref);
     }//經文資訊加入
     
-    
     // 2015.08.28 恩洋
     //如果已經是最後一個，但是還沒有印出來，就要讓程式繼續找，找到最後已經找完了就也要全部印出來  
     if((parseInt($.data($('#search_result')[0], 'cnt_recorder'))-1)===parseInt(idx)){
@@ -185,7 +184,7 @@ sephp.create_dialog_search_result = function create_dialog_search_result(jrecord
       {
         var re = sephp.continue_search();
         if (re != null)
-          sephp.create_dialog_search_result(re);
+         sephp.create_dialog_search_result(re);
       }
 
     });
